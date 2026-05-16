@@ -1,0 +1,10 @@
+#php -S localhost:8000 -t dinebook
+
+Mongo:
+mongodb://localhost:27017
+
+#http://localhost:8000/dinebook/auth/login.php
+
+# In terminal, Ctrl+C the running server, then:
+cd /Users/jorgesanchezgiron/Desktop/WebFP
+php -S localhost:8000

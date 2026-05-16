@@ -1,0 +1,147 @@
+<!-- create.html — Guests: Create -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DineBook — New Guest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/dinebook/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="../index.php">DineBook</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="../index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../reservations/report.php">Reservations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../tables/report.php">Tables</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="report.php">Guests</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../bookings/report.php">Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../noshows/report.php">No-Shows</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../auth/logout.php">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="report.php">Guests</a></li>
+                <li class="breadcrumb-item active">New Guest</li>
+            </ol>
+        </nav>
+
+        <h2 class="page-header">New Guest</h2>
+
+        <div class="card">
+            <div class="card-body form-section">
+                <form method="post" action="create_process.php">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="birth_date" class="form-label">Birth Date</label>
+                            <input type="date" class="form-control" id="birth_date" name="birth_date">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="preferred_zone" class="form-label">Preferred Zone</label>
+                            <select class="form-select" id="preferred_zone" name="preferred_zone">
+                                <option value="">-- Select --</option>
+                                <option value="terrace">Terrace</option>
+                                <option value="indoors">Indoors</option>
+                                <option value="bar">Bar</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="visit_count" class="form-label">Visit Count</label>
+                            <input type="number" class="form-control" id="visit_count" name="visit_count" min="0" value="0">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Dietary Restrictions</label>
+                        <div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Vegetarian" id="dr1"><label class="form-check-label" for="dr1">Vegetarian</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Vegan" id="dr2"><label class="form-check-label" for="dr2">Vegan</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Gluten-free" id="dr3"><label class="form-check-label" for="dr3">Gluten-free</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Nut allergy" id="dr4"><label class="form-check-label" for="dr4">Nut allergy</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Lactose intolerant" id="dr5"><label class="form-check-label" for="dr5">Lactose intolerant</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" name="dietary_restrictions[]" value="Shellfish allergy" id="dr6"><label class="form-check-label" for="dr6">Shellfish allergy</label></div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Loyalty Tier</label>
+                            <div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="loyalty_tier" id="lt_standard" value="standard" required><label class="form-check-label" for="lt_standard">Standard</label></div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="loyalty_tier" id="lt_silver" value="silver"><label class="form-check-label" for="lt_silver">Silver</label></div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="loyalty_tier" id="lt_gold" value="gold"><label class="form-check-label" for="lt_gold">Gold</label></div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="loyalty_tier" id="lt_vip" value="VIP"><label class="form-check-label" for="lt_vip">VIP</label></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Contact Preference</label>
+                            <div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="contact_preference" id="cp_email" value="email" required><label class="form-check-label" for="cp_email">Email</label></div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="contact_preference" id="cp_sms" value="SMS"><label class="form-check-label" for="cp_sms">SMS</label></div>
+                                <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="contact_preference" id="cp_whatsapp" value="whatsapp"><label class="form-check-label" for="cp_whatsapp">WhatsApp</label></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="last_visit" class="form-label">Last Visit</label>
+                            <input type="date" class="form-control" id="last_visit" name="last_visit">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="form-check mt-4">
+                                <input class="form-check-input" type="checkbox" name="marketing_opt_in" value="1" id="marketing_opt_in">
+                                <label class="form-check-label" for="marketing_opt_in">Marketing Opt-In</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes</label>
+                        <textarea class="form-control" id="notes" name="notes" maxlength="300"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Create Guest</button>
+                    <button type="reset" class="btn btn-secondary btn-reset">Reset</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="report.php" class="btn btn-link mt-3">&larr; Back to Guests</a>
+    </div>
+
+    <div class="footer container"><p>DineBook &copy; 2026</p></div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/dinebook/js/app.js"></script>
+</body>
+</html>
