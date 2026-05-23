@@ -22,6 +22,8 @@ foreach ($required as $f) { if (empty($_POST[$f])) $errors[] = ucfirst(str_repla
 <?php endforeach; ?>
         <a href="create.php" class="btn btn-secondary">&larr; Go Back</a>
 <?php else: try {
+    // Use the pre-generated Booking ID if provided
+    $preId = $_POST['booking_id'] ?? '';
     $doc = [
         'reservation_id'   => $_POST['reservation_id'],
         'table_id'         => $_POST['table_id'],
@@ -32,11 +34,15 @@ foreach ($required as $f) { if (empty($_POST[$f])) $errors[] = ucfirst(str_repla
         'actual_party_size'=> (int)$_POST['actual_party_size'],
         'assigned_by'      => $_POST['assigned_by'],
         'booking_status'   => $_POST['booking_status'] ?? 'pending',
+        'status'           => $_POST['booking_status'] ?? 'pending',
         'payment_status'   => $_POST['payment_status'] ?? 'unpaid',
         'special_setup'    => isset($_POST['special_setup']) ? $_POST['special_setup'] : [],
         'hostess_notes'    => $_POST['hostess_notes'] ?? '',
         'created_at'       => new MongoDB\BSON\UTCDateTime()
     ];
+    if (preg_match('/^[a-f0-9]{24}$/', $preId)) {
+        $doc['_id'] = new MongoDB\BSON\ObjectId($preId);
+    }
     $result = $bookings->insertOne($doc); ?>
         <div class="alert alert-success success-msg">Booking created successfully. (ID: <?php echo $result->getInsertedId(); ?>)</div>
         <a href="create.php" class="btn btn-primary">New Booking</a>

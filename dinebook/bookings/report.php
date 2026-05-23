@@ -5,7 +5,16 @@ require_once __DIR__ . '/../config.php';
 
 try {
     $cursor = $bookings->find([], ['sort' => ['created_at' => -1]]);
-    $records = iterator_to_array($cursor);
+    $allRows = iterator_to_array($cursor);
+    // Deduplicate multi-slot bookings: keep only one row per reservation_id
+    $seen = [];
+    $records = [];
+    foreach ($allRows as $row) {
+        $resId = (string)($row['reservation_id'] ?? '');
+        if ($resId !== '' && isset($seen[$resId])) continue;
+        if ($resId !== '') $seen[$resId] = true;
+        $records[] = $row;
+    }
 } catch (Exception $e) {
     $records = [];
     $dbError = $e->getMessage();
@@ -28,7 +37,7 @@ try {
             <p>Total: <strong><?php echo count($records); ?></strong> bookings</p>
             <div class="table-responsive">
             <table class="table table-striped table-hover table-bordered">
-                <thead><tr><th>Guest Name</th><th>Table #</th><th>Date</th><th>Check-in</th><th>Check-out</th><th>Party</th><th>Assigned By</th><th>Status</th><th>Payment</th><th>Setup</th></tr></thead>
+                <thead><tr><th>Booking ID</th><th>Guest Name</th><th>Table #</th><th>Date</th><th>Check-in</th><th>Check-out</th><th>Party</th><th>Assigned By</th><th>Status</th><th>Payment</th><th>Setup</th></tr></thead>
                 <tbody>
                 <?php foreach ($records as $b):
                     // Application-level join: resolve references
@@ -49,6 +58,7 @@ try {
                     if ($setup instanceof MongoDB\Model\BSONArray) $setup = $setup->getArrayCopy();
                 ?>
                 <tr>
+                    <td style="font-family:monospace; font-size:0.8rem;"><?php echo htmlspecialchars((string)$b['_id']); ?></td>
                     <td><?php echo htmlspecialchars($guestName); ?></td>
                     <td><?php echo htmlspecialchars($tableNum); ?></td>
                     <td><?php echo htmlspecialchars($b['booking_date'] ?? ''); ?></td>

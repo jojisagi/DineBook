@@ -20,7 +20,8 @@ try {
         $tables->find(['zone' => (string)$zone], ['sort' => ['table_number' => 1]])
     );
 
-    // 2) Get all ACTIVE bookings for that date (exclude cancelled ones so those slots become free)
+    // 2) Get all ACTIVE bookings for that date (exclude cancelled)
+    //    Check both 'status' and 'booking_status' since old records may only have one
     $bookedCursor = $bookings->find([
         'booking_date' => $date,
         'status'       => ['$ne' => 'cancelled'],
@@ -33,13 +34,17 @@ try {
         $time = (string)($b['time_slot'] ?? $b['booking_time'] ?? '');
         if ($tid !== '' && $time !== '') {
             $occupied[$tid][$time] = [
-                'guest_user'  => (string)($b['guest_user'] ?? ''),
-                'guest_email' => (string)($b['guest_email'] ?? ''),
-                'party_size'  => (int)($b['party_size'] ?? 0),
-                'notes'       => (string)($b['notes'] ?? ''),
-                'status'      => (string)($b['status'] ?? 'confirmed'),
-                'booked_by'   => (string)($b['booked_by'] ?? ''),
-                'booking_id'  => (string)$b['_id'],
+                'booking_id'     => (string)$b['_id'],
+                'reservation_id' => (string)($b['reservation_id'] ?? ''),
+                'guest_user'     => (string)($b['guest_user'] ?? $b['guest_name'] ?? ''),
+                'guest_email'    => (string)($b['guest_email'] ?? ''),
+                'party_size'     => (int)($b['party_size'] ?? $b['actual_party_size'] ?? 0),
+                'notes'          => (string)($b['notes'] ?? $b['hostess_notes'] ?? ''),
+                'status'         => (string)($b['booking_status'] ?? $b['status'] ?? 'confirmed'),
+                'booked_by'      => (string)($b['booked_by'] ?? $b['assigned_by'] ?? ''),
+                'duration'       => (int)($b['duration'] ?? 30),
+                'start_time'     => (string)($b['start_time'] ?? $b['check_in_time'] ?? $time),
+                'end_time'       => (string)($b['end_time'] ?? $b['check_out_time'] ?? ''),
             ];
         }
     }

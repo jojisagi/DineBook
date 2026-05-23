@@ -50,15 +50,18 @@ try {
 
     // Update ALL booking slots for this reservation (multi-slot support)
     $resId = $booking['reservation_id'] ?? null;
+    $bookingUpdate = [
+        'status'         => $newStatus,
+        'booking_status' => $newStatus,
+        'updated_by'     => $_SESSION['user'],
+        'updated_at'     => new MongoDB\BSON\UTCDateTime(),
+    ];
+
     if ($resId) {
         // Update all booking rows that share the same reservation_id
         $bookings->updateMany(
             ['reservation_id' => (string)$resId],
-            ['$set' => [
-                'status'     => $newStatus,
-                'updated_by' => $_SESSION['user'],
-                'updated_at' => new MongoDB\BSON\UTCDateTime(),
-            ]]
+            ['$set' => $bookingUpdate]
         );
 
         // Also update the reservation record
@@ -75,11 +78,7 @@ try {
         // Fallback: update single booking
         $bookings->updateOne(
             ['_id' => new MongoDB\BSON\ObjectId($bookingId)],
-            ['$set' => [
-                'status'     => $newStatus,
-                'updated_by' => $_SESSION['user'],
-                'updated_at' => new MongoDB\BSON\UTCDateTime(),
-            ]]
+            ['$set' => $bookingUpdate]
         );
     }
 

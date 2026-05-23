@@ -39,11 +39,12 @@ try {
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
-                        <tr><th>Guest Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Time</th><th>Party</th><th>Zone</th><th>Dietary</th><th>Occasion</th><th>Guest Type</th><th>Status</th><th>Confirmed</th></tr>
+                        <tr><th>Reservation ID</th><th>Guest Name</th><th>Email</th><th>Phone</th><th>Date</th><th>Time</th><th>Party</th><th>Zone</th><th>Dietary</th><th>Occasion</th><th>Guest Type</th><th>Status</th><th>Confirmed</th></tr>
                     </thead>
                     <tbody>
                     <?php foreach ($records as $r): ?>
                         <tr>
+                            <td style="font-family:monospace; font-size:0.8rem;"><?php echo htmlspecialchars((string)$r['_id']); ?></td>
                             <td><?php echo htmlspecialchars($r['guest_name']); ?></td>
                             <td><?php echo htmlspecialchars($r['email']); ?></td>
                             <td><?php echo htmlspecialchars($r['phone']); ?></td>

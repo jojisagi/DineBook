@@ -2,6 +2,9 @@
 // create.php — Bookings: Create
 require_once __DIR__ . '/../auth/guard.php';
 require_once __DIR__ . '/../config.php';
+
+// Pre-generate a Booking ID so staff can see/copy it before submitting
+$bookingId = new MongoDB\BSON\ObjectId();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,6 +22,14 @@ require_once __DIR__ . '/../config.php';
         <h2 class="page-header">New Booking</h2>
         <div class="card"><div class="card-body form-section">
             <form method="post" action="create_process.php">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label">Booking ID</label>
+                        <input type="text" class="form-control" value="<?php echo (string)$bookingId; ?>" readonly style="font-family:monospace; background:#f0f0f0;">
+                        <input type="hidden" name="booking_id" value="<?php echo (string)$bookingId; ?>">
+                        <div class="form-text">Auto-generated. Use this ID for no-show reports.</div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="reservation_id" class="form-label">Reservation ID</label>

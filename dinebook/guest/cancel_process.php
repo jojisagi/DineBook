@@ -58,8 +58,9 @@ try {
         $bookings->updateMany(
             ['reservation_id' => (string)$resId],
             ['$set' => [
-                'status'       => 'cancelled',
-                'cancelled_at' => new MongoDB\BSON\UTCDateTime(),
+                'status'         => 'cancelled',
+                'booking_status' => 'cancelled',
+                'cancelled_at'   => new MongoDB\BSON\UTCDateTime(),
             ]]
         );
         $reservations->updateOne(

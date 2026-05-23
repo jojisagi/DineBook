@@ -160,9 +160,11 @@ $isGuest = ($_SESSION['role'] ?? '') === 'guest';
                         <!-- Booking detail panel (staff/admin only) -->
                         <div id="booking-detail" class="booking-detail" style="display:none;">
                             <h6 class="mb-2" style="color:var(--dinebook-red);">Reservation Details</h6>
+                            <p class="mb-1"><span class="label">Booking ID:</span> <span class="value" id="bd-id" style="font-family:monospace; font-size:0.8rem;"></span></p>
                             <p class="mb-1"><span class="label">Guest:</span> <span class="value" id="bd-user"></span></p>
                             <p class="mb-1"><span class="label">Email:</span> <span class="value" id="bd-email"></span></p>
                             <p class="mb-1"><span class="label">Party size:</span> <span class="value" id="bd-party"></span></p>
+                            <p class="mb-1"><span class="label">Duration:</span> <span class="value" id="bd-duration"></span></p>
                             <p class="mb-1"><span class="label">Status:</span> <span id="bd-status"></span></p>
                             <p class="mb-1"><span class="label">Notes:</span> <span class="value" id="bd-notes"></span></p>
                             <div id="bd-actions" class="mt-2"></div>
@@ -367,9 +369,13 @@ $isGuest = ($_SESSION['role'] ?? '') === 'guest';
             $('#reserve-form').hide();
             $('#reserve-msg').html('');
 
+            $('#bd-id').text(bk.booking_id || '—');
             $('#bd-user').text(bk.guest_user || 'Unknown');
             $('#bd-email').text(bk.guest_email || '—');
             $('#bd-party').text(bk.party_size || '—');
+            $('#bd-duration').text(
+                bk.duration ? (bk.duration + ' min (' + (bk.start_time || '?') + ' – ' + (bk.end_time || '?') + ')') : '30 min'
+            );
             $('#bd-notes').text(bk.notes || 'None');
 
             // Status badge

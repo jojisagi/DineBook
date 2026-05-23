@@ -39,11 +39,12 @@ try {
             <div class="table-responsive">
                 <table class="table table-striped table-hover table-bordered">
                     <thead>
-                        <tr><th>Table #</th><th>Label</th><th>Capacity</th><th>Floor</th><th>Zone</th><th>Shape</th><th>Status</th><th>Power</th><th>Accessible</th><th>Notes</th></tr>
+                        <tr><th>Table ID</th><th>Table #</th><th>Label</th><th>Capacity</th><th>Floor</th><th>Zone</th><th>Shape</th><th>Status</th><th>Power</th><th>Accessible</th><th>Notes</th></tr>
                     </thead>
                     <tbody>
                     <?php foreach ($records as $r): ?>
                         <tr>
+                            <td style="font-family:monospace; font-size:0.8rem;"><?php echo htmlspecialchars((string)$r['_id']); ?></td>
                             <td><?php echo htmlspecialchars($r['table_number']); ?></td>
                             <td><?php echo htmlspecialchars($r['label'] ?? ''); ?></td>
                             <td><?php echo htmlspecialchars($r['capacity']); ?></td>
