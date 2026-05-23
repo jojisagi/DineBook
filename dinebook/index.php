@@ -1,6 +1,13 @@
 <?php
-// index.php — DineBook Dashboard
+// index.php — DineBook Dashboard (staff/host/admin only)
 require_once __DIR__ . '/auth/guard.php';
+
+// Guests should use the guest portal, not the staff dashboard
+if (($_SESSION['role'] ?? '') === 'guest') {
+    header('Location: /dinebook/guest/dashboard.php');
+    exit;
+}
+
 require_once __DIR__ . '/config.php';
 
 try {
@@ -35,6 +42,7 @@ try {
                     <li class="nav-item"><a class="nav-link" href="/dinebook/guests/report.php">Guests</a></li>
                     <li class="nav-item"><a class="nav-link" href="/dinebook/bookings/report.php">Bookings</a></li>
                     <li class="nav-item"><a class="nav-link" href="/dinebook/noshows/report.php">No-Shows</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/dinebook/guest/floormap.php">Floor Map</a></li>
                     <li class="nav-item"><a class="nav-link" href="/dinebook/auth/logout.php">Logout</a></li>
                 </ul>
                 <span class="navbar-text ms-auto" style="color:var(--dinebook-gold);">Welcome, <?php echo htmlspecialchars($_SESSION['user'] ?? 'Guest'); ?></span>

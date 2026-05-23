@@ -32,9 +32,10 @@ if ($email === '') {
     header('Location: register.php?error=email&u=' . urlencode($username));
     exit;
 }
-if (!in_array($role, ['host', 'staff'], true)) {
+$phone = clean_string($_POST['phone'] ?? '', 20);
+if (!in_array($role, ['host', 'staff', 'guest'], true)) {
     // Prevents privilege escalation — no way to self-assign "admin"
-    $role = 'staff';
+    $role = 'guest';
 }
 if (strlen($password) < 8 || strlen($password) > 128
     || !preg_match('/[A-Za-z]/', $password)
@@ -59,20 +60,30 @@ try {
     // 7) Store password only as a bcrypt hash (never plain text)
     $hash = password_hash($password, PASSWORD_BCRYPT);
 
-    $db->users->insertOne([
+    $doc = [
         'username'      => (string)$username,
         'email'         => (string)$email,
         'password_hash' => (string)$hash,
         'role'          => (string)$role,
         'created_at'    => new MongoDB\BSON\UTCDateTime(),
-    ]);
+    ];
+    if ($role === 'guest' && $phone !== '') {
+        $doc['phone'] = (string)$phone;
+    }
+    $db->users->insertOne($doc);
 
     // 8) Regenerate session ID to prevent session fixation
     session_regenerate_id(true);
-    $_SESSION['user'] = (string)$username;
-    $_SESSION['role'] = (string)$role;
+    $_SESSION['user']  = (string)$username;
+    $_SESSION['role']  = (string)$role;
+    $_SESSION['email'] = (string)$email;
 
-    header('Location: /dinebook/index.php');
+    // Route by role
+    if ($role === 'guest') {
+        header('Location: /dinebook/guest/dashboard.php');
+    } else {
+        header('Location: /dinebook/index.php');
+    }
     exit;
 
 } catch (Exception $e) {

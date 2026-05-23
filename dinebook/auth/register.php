@@ -52,10 +52,18 @@ $prev  = $_GET['u'] ?? '';
                 <div class="mb-3">
                     <label for="role" class="form-label">Register as</label>
                     <select class="form-select" id="role" name="role" required>
+                        <option value="guest">Guest (customer — make reservations)</option>
                         <option value="host">Host (restaurant owner/manager)</option>
                         <option value="staff">Staff (waiter / receptionist)</option>
                     </select>
                     <div class="form-text">Admin accounts can only be created by existing admins.</div>
+                </div>
+
+                <div class="mb-3" id="phone-group">
+                    <label for="phone" class="form-label">Phone number</label>
+                    <input type="tel" class="form-control" id="phone" name="phone"
+                           maxlength="20" placeholder="+502 1234-5678">
+                    <div class="form-text">Required for reservation confirmations.</div>
                 </div>
 
                 <div class="mb-3">

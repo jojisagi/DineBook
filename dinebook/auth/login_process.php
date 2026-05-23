@@ -39,13 +39,19 @@ try {
     if ($user && isset($user['password_hash']) && password_verify($password, (string)$user['password_hash'])) {
         // 8) Session fixation defense — regenerate ID on successful login
         session_regenerate_id(true);
-        $_SESSION['user'] = (string)$username;
-        $_SESSION['role'] = (string)($user['role'] ?? 'staff');
+        $_SESSION['user']  = (string)$username;
+        $_SESSION['role']  = (string)($user['role'] ?? 'staff');
+        $_SESSION['email'] = (string)($user['email'] ?? '');
 
         // Reset rate-limit counter on success
         unset($_SESSION['rl_login']);
 
-        header('Location: /dinebook/index.php');
+        // Route by role: guests go to guest dashboard, staff/host/admin to main dashboard
+        if ($_SESSION['role'] === 'guest') {
+            header('Location: /dinebook/guest/dashboard.php');
+        } else {
+            header('Location: /dinebook/index.php');
+        }
         exit;
     }
 

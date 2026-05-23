@@ -8,3 +8,12 @@ mongodb://localhost:27017
 # In terminal, Ctrl+C the running server, then:
 cd /Users/jorgesanchezgiron/Desktop/WebFP
 php -S localhost:8000
+
+localhost:8000/dinebook/index.php
+
+
+
+test customer
+
+cus
+cuscuscus1
